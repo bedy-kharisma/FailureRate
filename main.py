@@ -45,7 +45,7 @@ filtered_df['Total Quantity']= filtered_df['Total Quantity'].astype(int)
 
 #calculate t = Total komponen*OH
 filtered_df['Total komponen*OH']= filtered_df['Total Quantity']*filtered_df['Total Operating Hours']
-filtered_df['Total komponen*OH']= filtered_df['Total komponen*OH'].astype(int)
+filtered_df['Total komponen*OH']= filtered_df['Total komponen*OH']
 
 # Define the function
 def failure_rate(row):
