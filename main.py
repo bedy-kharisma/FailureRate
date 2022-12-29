@@ -8,7 +8,7 @@ csv_url=(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv")
 #create dataframe from csv
 df=pd.read_csv(csv_url)
 unq_mainsys=df['Main System'].unique()
-
+df['Jumlah kegagalan']= df['Jumlah kegagalan'].astype(int)
 
 st.markdown("# Failure Rate Calculator")
 mainsys = st.selectbox('Pilih Main System apa yang akan Anda hitung',unq_mainsys)
@@ -28,12 +28,15 @@ filtered_df = filtered_df[filtered_df['Vendor Name'].isin(vendor)]
 #sum unique values operating hours per year
 sum_unique_values = filtered_df.groupby('Operating Hours per Year')['Operating Hours per Year'].unique().sum()
 filtered_df['Total Operating Hours']=sum_unique_values.sum()
+filtered_df['Total Operating Hours']= filtered_df['Total Operating Hours'].astype(int)
 
 #calculate total quantity
 filtered_df['Total Quantity'] = filtered_df.groupby('Item Name')['Quantity all Trainset'].transform('sum')
+filtered_df['Total Quantity']= filtered_df['Total Quantity'].astype(int)
 
 #calculate t = Total komponen*OH
 filtered_df['Total komponen*OH']= filtered_df['Total Quantity']*filtered_df['Total Operating Hours']
+filtered_df['Total komponen*OH']= filtered_df['Total komponen*OH'].astype(int)
 
 # Define the function
 def failure_rate(row):
@@ -43,13 +46,9 @@ def failure_rate(row):
         return row['Jumlah kegagalan'] / row['Total komponen*OH']
     else:
         return 1 / (row['Total Quantity'] * row['Total Operating Hours'])
-
 # Apply the function to the dataframe
 filtered_df['Failure Rate'] = filtered_df.apply(failure_rate, axis=1)
-
-
-                                    
-
+                               
 #change into scientific format
 def to_scientific(x):
     return '{:.2e}'.format(x)
@@ -57,9 +56,7 @@ filtered_df['Failure Rate'] = filtered_df['Failure Rate'].apply(to_scientific)
 
 #show only unique item
 unique_df = filtered_df.drop_duplicates(subset=['Item Ref', 'Item Name'])
-
 unique_df  = unique_df .reset_index().drop(columns='index')
-
 st.dataframe(unique_df[['Item Ref', 'Item Name','Total Operating Hours','Total Quantity','Jumlah kegagalan','Failure Rate']])
 
 
