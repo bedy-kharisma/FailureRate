@@ -25,19 +25,12 @@ vendor=st.multiselect('Data dari Vendor saja yang akan Anda gunakan',unq_vendor,
 #filter based on multiple select vendor name
 filtered_df = filtered_df[filtered_df['Vendor Name'].isin(vendor)]
 
-#sum unique values operating hours per year
-#sum_unique_values = filtered_df.groupby('Operating Hours per Year')['Operating Hours per Year'].unique().sum()
-#filtered_df['Total Operating Hours']=sum_unique_values.sum()
-#filtered_df['Total Operating Hours']= filtered_df['Total Operating Hours'].astype(int)
-
 # Create a new dataframe with the duplicates removed
 df_no_duplicates = filtered_df.drop_duplicates(subset='Project Name', inplace=False)
-# Group the data by the 'Product' column and sum the values in the 'Quantity' column
-
-total_quantity = df_no_duplicates['Operating Hours per Year'].sum()
-
+# sum the values in the 'operating hours per year' column
+total_ophours = df_no_duplicates['Operating Hours per Year'].sum()
 # Assign the sum back to the original dataframe
-filtered_df['Total Operating Hours'] = total_quantity.astype(int)
+filtered_df['Total Operating Hours'] = total_ophours.astype(int)
 
 #calculate total quantity
 filtered_df['Total Quantity'] = filtered_df.groupby('Item Name')['Quantity all Trainset'].transform('sum')
