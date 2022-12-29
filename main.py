@@ -31,7 +31,7 @@ filtered_df = filtered_df[filtered_df['Vendor Name'].isin(vendor)]
 #filtered_df['Total Operating Hours']= filtered_df['Total Operating Hours'].astype(int)
 
 # Create a new dataframe with the duplicates removed
-df_no_duplicates = filtered_df.drop_duplicates(inplace=False)
+df_no_duplicates = filtered_df.drop_duplicates(subset='Project Name', inplace=False)
 # Group the data by the 'Product' column and sum the values in the 'Quantity' column
 df_no_duplicates = df_no_duplicates.groupby('Project Name').sum()['Operating Hours per Year']
 # Reset the index of the dataframe
