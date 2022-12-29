@@ -35,7 +35,7 @@ df_no_duplicates = filtered_df.drop_duplicates(inplace=False)
 # Group the data by the 'Product' column and sum the values in the 'Quantity' column
 df_no_duplicates = df_no_duplicates.groupby('Project Name').sum()['Operating Hours per Year']
 # Assign the sum back to the original dataframe
-filtered_df['Operating Hours per Year'] = df_no_duplicates['Operating Hours per Year'].astype(int)
+filtered_df['Operating Hours per Year'] = df_no_duplicates['Operating Hours per Year']
 
 #calculate total quantity
 filtered_df['Total Quantity'] = filtered_df.groupby('Item Name')['Quantity all Trainset'].transform('sum')
